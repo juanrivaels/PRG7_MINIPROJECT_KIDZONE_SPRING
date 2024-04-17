@@ -10,7 +10,6 @@ public class PenjualanVo {
     private Integer penjualanId;
     private Date penjualanTanggal;
     private Float penjualanTotalHarga;
-    private Set<Produk> produk;
 
     public PenjualanVo(){
 
@@ -20,7 +19,6 @@ public class PenjualanVo {
         this.penjualanId = penjualan.getId_transaksi();
         this.penjualanTanggal = penjualan.getTgl_transaksi();
         this.penjualanTotalHarga = penjualan.getTotal_harga();
-        this.produk = penjualan.getProduk();
     }
 
     public Integer getPenjualanId() {
@@ -47,11 +45,4 @@ public class PenjualanVo {
         this.penjualanTotalHarga = penjualanTotalHarga;
     }
 
-    public Set<Produk> getProduk() {
-        return produk;
-    }
-
-    public void setProduk(Set<Produk> produk) {
-        this.produk = produk;
-    }
 }

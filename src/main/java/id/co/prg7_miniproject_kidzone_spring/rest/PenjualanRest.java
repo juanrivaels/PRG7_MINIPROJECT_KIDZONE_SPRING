@@ -1,6 +1,5 @@
 package id.co.prg7_miniproject_kidzone_spring.rest;
 
-
 import id.co.prg7_miniproject_kidzone_spring.model.Penjualan;
 import id.co.prg7_miniproject_kidzone_spring.model.Produk;
 import id.co.prg7_miniproject_kidzone_spring.response.DtoResponse;
@@ -13,21 +12,20 @@ import java.util.Set;
 @RestController
 @RequestMapping("/penjualan")
 public class PenjualanRest {
-    @Autowired
-    private PenjualanService penjualanService;
+    private final PenjualanService penjualanService;
 
-    public PenjualanRest(PenjualanService penjualanService){
+    @Autowired
+    public PenjualanRest(PenjualanService penjualanService) {
         this.penjualanService = penjualanService;
     }
 
     @GetMapping("/getPenjualan")
-    public DtoResponse getPenjualan(){
+    public DtoResponse getPenjualan() {
         return penjualanService.getAllPenjualan();
     }
 
     @PostMapping("/savePenjualan")
-    public DtoResponse savePenjualan(@RequestBody Penjualan penjualan, @RequestBody Set<Produk> produk){
-        return penjualanService.savePenjualan(penjualan, produk);
+    public DtoResponse savePenjualan(@RequestBody Penjualan penjualan){
+        return penjualanService.savePenjualan(penjualan);
     }
-
 }

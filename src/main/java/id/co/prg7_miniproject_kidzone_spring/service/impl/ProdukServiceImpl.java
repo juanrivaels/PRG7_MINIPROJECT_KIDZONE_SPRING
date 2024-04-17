@@ -35,6 +35,19 @@ public class ProdukServiceImpl implements ProduKService {
         return new DtoResponse(500,null,mProEmptyData);
     }
     @Override
+    public DtoResponse getProdukById(Integer id) {
+        try {
+            Produk produk = produkRepository.findById(id).orElse(null);
+            if (produk != null) {
+                return new DtoResponse(200, produk);
+            } else {
+                return new DtoResponse(404, null, "Produk dengan ID " + id + " tidak ditemukan.");
+            }
+        } catch (Exception e) {
+            return new DtoResponse(500, null, "Gagal mengambil data produk: " + e.getMessage());
+        }
+    }
+    @Override
     public DtoResponse saveProduk(Produk produk){
         produk.setPro_status(1);
         try {

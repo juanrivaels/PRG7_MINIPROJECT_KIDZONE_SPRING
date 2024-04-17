@@ -8,5 +8,5 @@ import java.util.Set;
 
 public interface PenjualanService {
     DtoResponse getAllPenjualan();
-    DtoResponse savePenjualan(Penjualan penjualan, Set<Produk> produk);
+    DtoResponse savePenjualan(Penjualan penjualan);
 }

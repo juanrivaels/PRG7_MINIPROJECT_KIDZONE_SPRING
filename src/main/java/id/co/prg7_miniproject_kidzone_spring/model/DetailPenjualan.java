@@ -2,37 +2,37 @@ package id.co.prg7_miniproject_kidzone_spring.model;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
+
 @Entity
 @Table(name = "detail_penjualan")
-public class DetailPenjualan {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_detail")
-    private Integer id_detail;
+public class DetailPenjualan implements Serializable {
+
+    @EmbeddedId
+    private DetailPenjualanPK detailPenjualanPK;
 
     @ManyToOne
-    @JoinColumn(name = "id_transaksi", referencedColumnName = "id_transaksi")
+    @JoinColumn(name = "id_transaksi", referencedColumnName = "id_transaksi", insertable = false, updatable = false)
     private Penjualan penjualan;
 
     @ManyToOne
-    @JoinColumn(name = "id_produk", referencedColumnName = "pro_id")
+    @JoinColumn(name = "id_produk", referencedColumnName = "pro_id", insertable = false, updatable = false)
     private Produk produk;
 
-    @Column(name = "jumlah")
-    private Integer jumlah;
-
-    @Column(name = "sub_harga")
-    private Float sub_harga;
 
     public DetailPenjualan() {
     }
 
-    public Integer getId_detail() {
-        return id_detail;
+    public DetailPenjualan(DetailPenjualanPK detailPenjualanPK) {
+        this.detailPenjualanPK = detailPenjualanPK;
     }
 
-    public void setId_detail(Integer id_detail) {
-        this.id_detail = id_detail;
+    public DetailPenjualanPK getDetailPenjualanPK() {
+        return detailPenjualanPK;
+    }
+
+    public void setDetailPenjualanPK(DetailPenjualanPK detailPenjualanPK) {
+        this.detailPenjualanPK = detailPenjualanPK;
     }
 
     public Penjualan getPenjualan() {
@@ -51,20 +51,5 @@ public class DetailPenjualan {
         this.produk = produk;
     }
 
-    public Integer getJumlah() {
-        return jumlah;
-    }
-
-    public void setJumlah(Integer jumlah) {
-        this.jumlah = jumlah;
-    }
-
-    public Float getSub_harga() {
-        return sub_harga;
-    }
-
-    public void setSub_harga(Float sub_harga) {
-        this.sub_harga = sub_harga;
-    }
 }
 

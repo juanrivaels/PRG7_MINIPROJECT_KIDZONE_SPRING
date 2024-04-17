@@ -3,12 +3,15 @@ package id.co.prg7_miniproject_kidzone_spring.service.impl;
 
 import id.co.prg7_miniproject_kidzone_spring.dao.PenjualanDao;
 import id.co.prg7_miniproject_kidzone_spring.model.DetailPenjualan;
+import id.co.prg7_miniproject_kidzone_spring.model.DetailPenjualanPK;
 import id.co.prg7_miniproject_kidzone_spring.model.Penjualan;
 import id.co.prg7_miniproject_kidzone_spring.model.Produk;
+import id.co.prg7_miniproject_kidzone_spring.repository.DetailPenjualanRepository;
 import id.co.prg7_miniproject_kidzone_spring.repository.PenjualanRepository;
 import id.co.prg7_miniproject_kidzone_spring.repository.ProdukRepository;
 import id.co.prg7_miniproject_kidzone_spring.response.DtoResponse;
 import id.co.prg7_miniproject_kidzone_spring.service.PenjualanService;
+import id.co.prg7_miniproject_kidzone_spring.service.ProduKService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,7 +33,12 @@ public class PenjualanServiceImpl implements PenjualanService {
     private PenjualanDao penjualanDao;
     @Autowired
     private ProdukRepository produkRepository;
+    @Autowired
+    private DetailPenjualanRepository detailPenjualanRepository;
+    @Autowired
+    private ProduKService produKService;
 
+    @Override
     public DtoResponse getAllPenjualan(){
         if(penjualanDao.getAllPenjualan() != null){
             return new DtoResponse(200, penjualanDao.getAllPenjualan());
@@ -38,32 +46,36 @@ public class PenjualanServiceImpl implements PenjualanService {
         return new DtoResponse(200, null, mPjlNotFound);
     }
 
-    public DtoResponse savePenjualan(Penjualan penjualan, Set<Produk> produk){
-        penjualan.setTgl_transaksi(new Date());
-        try{
-            Float total = 0f;
-            for(Produk p : produk){
-                total += p.getPro_harga(); // misalnya, hitung total harga dari semua produk
-            }
-            penjualan.setTotal_harga(total);
+    @Override
+    public DtoResponse savePenjualan(Penjualan penjualan){
+        try {
+            penjualan.setTgl_transaksi(new Date());
 
-            // Buat detail penjualan untuk setiap produk
-            Set<DetailPenjualan> detailPenjualan = new HashSet<>();
-            for (Produk p : produk) {
-                DetailPenjualan detail = new DetailPenjualan();
-                detail.setPenjualan(penjualan);
-                detail.setProduk(p);
-                detail.setJumlah(p.getPro_stok()); // Mengambil jumlah dari Produk
-                detail.setSub_harga(p.getPro_harga() * p.getPro_stok()); // Hitung subtotal berdasarkan harga produk dan jumlah
-                detailPenjualan.add(detail);
+            for (Integer idProduk : penjualan.getIdProdukList()){
+                DtoResponse produkResponse =  produKService.getProdukById(idProduk);
+                Produk produk = (Produk) produkResponse.getData();
+                if (produk != null && produk.getPro_stok() > 0){
+                    produk.setPro_stok(produk.getPro_stok() - 1);
+                    produKService.updateProduk(produk);
+                }else {
+                    return new DtoResponse(400, null, "Produk dengan ID" + idProduk +"tidak tersedia.");
+                }
             }
 
-            penjualan.setDetailPenjualan(detailPenjualan);
+            Penjualan savePenjualan =penjualanRepository.save(penjualan);
 
-            penjualanRepository.save(penjualan);
-            return new DtoResponse(200, penjualan, mPjlCreateSuccess);
-        } catch (Exception e){
-            return new DtoResponse(500, mPjlCreateFailed);
+            for (Integer idProduk : penjualan.getIdProdukList()){
+                DetailPenjualan detailPenjualan = new DetailPenjualan();
+                DetailPenjualanPK detailPenjualanPK = new DetailPenjualanPK();
+                detailPenjualanPK.setId_transaksi(savePenjualan.getId_transaksi());
+                detailPenjualanPK.setId_produk(idProduk);
+                detailPenjualan.setDetailPenjualanPK(detailPenjualanPK);
+
+                detailPenjualanRepository.save(detailPenjualan);
+            }
+            return new DtoResponse(200, savePenjualan, mPjlCreateSuccess);
+        }catch (Exception e){
+            return new DtoResponse(500, penjualan, mPjlCreateFailed);
         }
     }
 }
