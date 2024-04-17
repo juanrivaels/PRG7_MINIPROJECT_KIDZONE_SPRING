@@ -5,6 +5,7 @@ import id.co.prg7_miniproject_kidzone_spring.service.ProduKService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/produks")
 public class ProdukRest {

@@ -40,28 +40,30 @@ public class DetailPenjualanServiceImpl implements DetailPenjualanService {
     }
 
     @Override
-    public DtoResponse saveDetailPenjualan(DetailPenjualanVoForm detailPenjualanVoForm){
+    public DtoResponse saveDetailPenjualan(DetailPenjualanVoForm detailPenjualanVoForm) {
         try {
             DetailPenjualanPK detailPenjualanPK = new DetailPenjualanPK();
             detailPenjualanPK.setId_transaksi(detailPenjualanVoForm.getId_transaksi());
             detailPenjualanPK.setId_produk(detailPenjualanVoForm.getId_produk());
+            detailPenjualanPK.setJumlah(detailPenjualanVoForm.getJumlah());
 
             Penjualan existingPenjualan = penjualanRepository.findById(detailPenjualanVoForm.getId_transaksi()).orElse(null);
-            if (existingPenjualan == null){
-                return new DtoResponse(404, null, "Peminjaman is invalid");
+            if (existingPenjualan == null) {
+                return new DtoResponse(404, null, "Penjualan is invalid");
             }
 
             Produk existingProduk = produkRepository.findById(detailPenjualanVoForm.getId_produk()).orElse(null);
-            if (existingProduk == null){
+            if (existingProduk == null) {
                 return new DtoResponse(404, null, "Produk is Invalid");
             }
+
             DetailPenjualan detailPenjualan = new DetailPenjualan();
             detailPenjualan.setDetailPenjualanPK(detailPenjualanPK);
 
             DetailPenjualan detailPenjualan1 = detailPenjualanRepository.save(detailPenjualan);
-            return new DtoResponse(200, detailPenjualan1, mPjlCreateSuccess);
-        }catch (Exception e){
-            return new DtoResponse(500, detailPenjualanVoForm,mPjlCreateSuccess);
+            return new DtoResponse(200, detailPenjualan1, "Detail Penjualan created successfully.");
+        } catch (Exception e) {
+            return new DtoResponse(500, detailPenjualanVoForm, "Failed to create Detail Penjualan.");
         }
     }
 }

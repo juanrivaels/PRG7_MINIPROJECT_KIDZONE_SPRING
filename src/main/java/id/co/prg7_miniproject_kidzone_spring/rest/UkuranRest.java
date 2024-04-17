@@ -7,6 +7,7 @@ import id.co.prg7_miniproject_kidzone_spring.vo.UkuranVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/ukurans")
 public class UkuranRest {

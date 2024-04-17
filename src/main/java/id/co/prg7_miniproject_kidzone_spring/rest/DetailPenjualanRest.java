@@ -7,6 +7,7 @@ import id.co.prg7_miniproject_kidzone_spring.vo.DetailPenjualanVoForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/detailpenjualan")
 public class DetailPenjualanRest {
@@ -21,8 +22,7 @@ public class DetailPenjualanRest {
     public DtoResponse getDetailPenjualans(){
         return detailPenjualanService.getAllDetailPenjualan();
     }
-
-    @PostMapping("/saveDetailPenjualan")
+    @PostMapping("/saveDetailPenjualan") // Ubah path sesuai kebutuhan Anda
     public DtoResponse saveDetailPenjualan(@RequestBody DetailPenjualanVoForm detailPenjualanVoForm){
         return detailPenjualanService.saveDetailPenjualan(detailPenjualanVoForm);
     }
