@@ -39,43 +39,50 @@ public class PenjualanServiceImpl implements PenjualanService {
     private ProduKService produKService;
 
     @Override
-    public DtoResponse getAllPenjualan(){
-        if(penjualanDao.getAllPenjualan() != null){
+    public DtoResponse getAllPenjualan() {
+        if (penjualanDao.getAllPenjualan() != null) {
             return new DtoResponse(200, penjualanDao.getAllPenjualan());
         }
         return new DtoResponse(200, null, mPjlNotFound);
     }
 
     @Override
-    public DtoResponse savePenjualan(Penjualan penjualan){
+    public DtoResponse savePenjualan(Penjualan penjualan) {
         try {
             penjualan.setTgl_transaksi(new Date());
 
-            for (Integer idProduk : penjualan.getIdProdukList()){
-                DtoResponse produkResponse =  produKService.getProdukById(idProduk);
+            // Iterate over the list of product IDs in the transaction
+            for (Integer idProduk : penjualan.getIdProdukList()) {
+                DtoResponse produkResponse = produKService.getProdukById(idProduk);
                 Produk produk = (Produk) produkResponse.getData();
-                if (produk != null && produk.getPro_stok() > 0){
+                if (produk != null && produk.getPro_stok() > 0) {
                     produk.setPro_stok(produk.getPro_stok() - 1);
                     produKService.updateProduk(produk);
-                }else {
-                    return new DtoResponse(400, null, "Produk dengan ID" + idProduk +"tidak tersedia.");
+                } else {
+                    return new DtoResponse(400, null, "Produk dengan ID " + idProduk + " tidak tersedia.");
                 }
             }
 
-            Penjualan savePenjualan =penjualanRepository.save(penjualan);
-
-            for (Integer idProduk : penjualan.getIdProdukList()){
-                DetailPenjualan detailPenjualan = new DetailPenjualan();
-                DetailPenjualanPK detailPenjualanPK = new DetailPenjualanPK();
-                detailPenjualanPK.setId_transaksi(savePenjualan.getId_transaksi());
-                detailPenjualanPK.setId_produk(idProduk);
-                detailPenjualan.setDetailPenjualanPK(detailPenjualanPK);
-
-                detailPenjualanRepository.save(detailPenjualan);
+            // Calculate total harga
+            float totalHarga = 0;
+            for (DetailPenjualan detail : penjualan.getDetailPenjualanList()) {
+                Produk produk = detail.getProduk();
+                totalHarga += produk.getPro_harga() * detail.getJumlah();
             }
-            return new DtoResponse(200, savePenjualan, mPjlCreateSuccess);
-        }catch (Exception e){
+            penjualan.setTotal_harga(totalHarga);
+
+            // Save the sales transaction
+            Penjualan savedPenjualan = penjualanRepository.save(penjualan);
+
+            // Update the detail_penjualan table with the details of the products sold
+            for (DetailPenjualan detail : penjualan.getDetailPenjualanList()) {
+                detail.setPenjualan(savedPenjualan);
+                detailPenjualanRepository.save(detail);
+            }
+            return new DtoResponse(200, savedPenjualan, mPjlCreateSuccess);
+        } catch (Exception e) {
             return new DtoResponse(500, penjualan, mPjlCreateFailed);
         }
+
     }
 }

@@ -14,7 +14,7 @@ public class DetailPenjualanVoForm {
     public DetailPenjualanVoForm(DetailPenjualan detailPenjualan) {
         this.id_transaksi = detailPenjualan.getDetailPenjualanPK().getId_transaksi();
         this.id_produk = detailPenjualan.getDetailPenjualanPK().getId_produk();
-        this.jumlah = detailPenjualan.getDetailPenjualanPK().getJumlah();
+        this.jumlah = detailPenjualan.getJumlah();
     }
 
     public Integer getId_transaksi() {

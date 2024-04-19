@@ -20,6 +20,7 @@ public class Penjualan {
 
     @Column(name = "total_harga")
     private Float total_harga;
+    private Integer jumlah;
 
     @Transient
     private List<Integer>idProdukList;
@@ -73,5 +74,13 @@ public class Penjualan {
 
     public void setDetailPenjualanList(List<DetailPenjualan> detailPenjualanList) {
         this.detailPenjualanList = detailPenjualanList;
+    }
+
+    public Integer getJumlah() {
+        return jumlah;
+    }
+
+    public void setJumlah(Integer jumlah) {
+        this.jumlah = jumlah;
     }
 }

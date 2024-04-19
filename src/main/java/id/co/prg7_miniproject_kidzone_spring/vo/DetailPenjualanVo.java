@@ -5,28 +5,28 @@ import id.co.prg7_miniproject_kidzone_spring.model.DetailPenjualan;
 import java.io.Serializable;
 
 public class DetailPenjualanVo implements Serializable {
-    private Integer transaksiId;
+    private Integer id_transaksi;
     private String transaksiDesc;
-    private Integer produkId;
+    private Integer id_produk;
     private String produkDesc;
-    private Integer transaksiJumlah;
+    private Integer jumlah;
 
     public DetailPenjualanVo(){
 
     }
 
     public DetailPenjualanVo(DetailPenjualan detailPenjualan){
-        this.transaksiId = detailPenjualan.getDetailPenjualanPK().getId_transaksi();
-        this.produkId = detailPenjualan.getDetailPenjualanPK().getId_produk();
-        this.transaksiJumlah = detailPenjualan.getDetailPenjualanPK().getJumlah();
+        this.id_transaksi = detailPenjualan.getDetailPenjualanPK().getId_transaksi();
+        this.id_produk = detailPenjualan.getDetailPenjualanPK().getId_produk();
+        this.jumlah = detailPenjualan.getJumlah();
     }
 
-    public Integer getTransaksiId() {
-        return transaksiId;
+    public Integer getId_transaksi() {
+        return id_transaksi;
     }
 
-    public void setTransaksiId(Integer transaksiId) {
-        this.transaksiId = transaksiId;
+    public void setId_transaksi(Integer id_transaksi) {
+        this.id_transaksi = id_transaksi;
     }
 
     public String getTransaksiDesc() {
@@ -37,12 +37,12 @@ public class DetailPenjualanVo implements Serializable {
         this.transaksiDesc = transaksiDesc;
     }
 
-    public Integer getProdukId() {
-        return produkId;
+    public Integer getId_produk() {
+        return id_produk;
     }
 
-    public void setProdukId(Integer produkId) {
-        this.produkId = produkId;
+    public void setId_produk(Integer id_produk) {
+        this.id_produk = id_produk;
     }
 
     public String getProdukDesc() {
@@ -53,11 +53,11 @@ public class DetailPenjualanVo implements Serializable {
         this.produkDesc = produkDesc;
     }
 
-    public Integer getTransaksiJumlah() {
-        return transaksiJumlah;
+    public Integer getJumlah() {
+        return jumlah;
     }
 
-    public void setTransaksiJumlah(Integer transaksiJumlah) {
-        this.transaksiJumlah = transaksiJumlah;
+    public void setJumlah(Integer jumlah) {
+        this.jumlah = jumlah;
     }
 }

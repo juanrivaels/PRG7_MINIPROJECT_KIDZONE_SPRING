@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/detailpenjualan")
+@RequestMapping("/detailPenjualan")
 public class DetailPenjualanRest {
     @Autowired
     private DetailPenjualanService detailPenjualanService;

@@ -10,6 +10,8 @@ public class DetailPenjualan implements Serializable {
 
     @EmbeddedId
     private DetailPenjualanPK detailPenjualanPK;
+    @Column(name = "jumlah")
+    private Integer jumlah;
 
     @ManyToOne
     @JoinColumn(name = "id_transaksi", referencedColumnName = "id_transaksi", insertable = false, updatable = false)
@@ -23,8 +25,9 @@ public class DetailPenjualan implements Serializable {
     public DetailPenjualan() {
     }
 
-    public DetailPenjualan(DetailPenjualanPK detailPenjualanPK) {
+    public DetailPenjualan(DetailPenjualanPK detailPenjualanPK, Integer jumlah) {
         this.detailPenjualanPK = detailPenjualanPK;
+        this.jumlah = jumlah;
     }
 
     public DetailPenjualanPK getDetailPenjualanPK() {
@@ -51,5 +54,15 @@ public class DetailPenjualan implements Serializable {
         this.produk = produk;
     }
 
+    public Integer getJumlah() {
+        return jumlah;
+    }
+
+    public void setJumlah(Integer jumlah) {
+        if (jumlah == null) {
+            throw new IllegalArgumentException("Jumlah produk tidak boleh null");
+        }
+        this.jumlah = jumlah;
+    }
 }
 

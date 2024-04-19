@@ -10,17 +10,14 @@ public class DetailPenjualanPK implements Serializable {
     private Integer id_produk;
     @Column(name = "id_transaksi")
     private Integer id_transaksi;
-    @Column(name = "jumlah")
-    private Integer jumlah;
 
     public DetailPenjualanPK(){
 
     }
 
-    public DetailPenjualanPK(Integer id_produk, Integer id_transaksi, Integer jumlah) {
+    public DetailPenjualanPK(Integer id_produk, Integer id_transaksi) {
         this.id_produk = id_produk;
         this.id_transaksi = id_transaksi;
-        this.jumlah = jumlah;
     }
 
     public Integer getId_produk() {
@@ -39,11 +36,4 @@ public class DetailPenjualanPK implements Serializable {
         this.id_transaksi = id_transaksi;
     }
 
-    public Integer getJumlah() {
-        return jumlah;
-    }
-
-    public void setJumlah(Integer jumlah) {
-        this.jumlah = jumlah;
-    }
 }

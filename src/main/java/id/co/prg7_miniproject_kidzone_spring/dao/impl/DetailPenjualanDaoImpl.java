@@ -28,7 +28,7 @@ public class DetailPenjualanDaoImpl implements DetailPenjualanDao {
         for (DetailPenjualan item : detailPenjualan){
             DetailPenjualanVo detailPenjualanVo = new DetailPenjualanVo(item);
 
-            Produk produk = produkRepository.findById(detailPenjualanVo.getProdukId()).orElseThrow();
+            Produk produk = produkRepository.findById(detailPenjualanVo.getId_produk()).orElseThrow();
             detailPenjualanVo.setProdukDesc(produk.getPro_nama());
 
             detailPenjualanVos.add(detailPenjualanVo);

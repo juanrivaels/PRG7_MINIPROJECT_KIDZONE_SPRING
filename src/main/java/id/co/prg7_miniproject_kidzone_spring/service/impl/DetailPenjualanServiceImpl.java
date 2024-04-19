@@ -42,26 +42,29 @@ public class DetailPenjualanServiceImpl implements DetailPenjualanService {
     @Override
     public DtoResponse saveDetailPenjualan(DetailPenjualanVoForm detailPenjualanVoForm) {
         try {
+            // Validate produk
+            Produk produk = produkRepository.findById(detailPenjualanVoForm.getId_produk()).orElse(null);
+            if (produk == null) {
+                return new DtoResponse(400, null, "Produk is invalid");
+            }
+
+            // Validate transaksi
+            Penjualan penjualan = penjualanRepository.findById(detailPenjualanVoForm.getId_transaksi()).orElse(null);
+            if (penjualan == null) {
+                return new DtoResponse(400, null, "Penjualan is invalid");
+            }
+
+
             DetailPenjualanPK detailPenjualanPK = new DetailPenjualanPK();
             detailPenjualanPK.setId_transaksi(detailPenjualanVoForm.getId_transaksi());
             detailPenjualanPK.setId_produk(detailPenjualanVoForm.getId_produk());
-            detailPenjualanPK.setJumlah(detailPenjualanVoForm.getJumlah());
-
-            Penjualan existingPenjualan = penjualanRepository.findById(detailPenjualanVoForm.getId_transaksi()).orElse(null);
-            if (existingPenjualan == null) {
-                return new DtoResponse(404, null, "Penjualan is invalid");
-            }
-
-            Produk existingProduk = produkRepository.findById(detailPenjualanVoForm.getId_produk()).orElse(null);
-            if (existingProduk == null) {
-                return new DtoResponse(404, null, "Produk is Invalid");
-            }
 
             DetailPenjualan detailPenjualan = new DetailPenjualan();
             detailPenjualan.setDetailPenjualanPK(detailPenjualanPK);
+            detailPenjualan.setJumlah(detailPenjualanVoForm.getJumlah());
 
-            DetailPenjualan detailPenjualan1 = detailPenjualanRepository.save(detailPenjualan);
-            return new DtoResponse(200, detailPenjualan1, "Detail Penjualan created successfully.");
+            detailPenjualanRepository.save(detailPenjualan);
+            return new DtoResponse(200, detailPenjualanVoForm, "Detail Penjualan created successfully.");
         } catch (Exception e) {
             return new DtoResponse(500, detailPenjualanVoForm, "Failed to create Detail Penjualan.");
         }
