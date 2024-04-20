@@ -59,9 +59,6 @@ public class DetailPenjualan implements Serializable {
     }
 
     public void setJumlah(Integer jumlah) {
-        if (jumlah == null) {
-            throw new IllegalArgumentException("Jumlah produk tidak boleh null");
-        }
         this.jumlah = jumlah;
     }
 }

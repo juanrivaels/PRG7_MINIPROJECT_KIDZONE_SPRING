@@ -59,30 +59,29 @@ public class PenjualanServiceImpl implements PenjualanService {
                     produk.setPro_stok(produk.getPro_stok() - 1);
                     produKService.updateProduk(produk);
                 } else {
-                    return new DtoResponse(400, null, "Produk dengan ID " + idProduk + " tidak tersedia.");
+                    return new DtoResponse(400, null, "Produk dengan ID" + idProduk + "tidak tersedia.");
                 }
             }
-
-            // Calculate total harga
-            float totalHarga = 0;
-            for (DetailPenjualan detail : penjualan.getDetailPenjualanList()) {
-                Produk produk = detail.getProduk();
-                totalHarga += produk.getPro_harga() * detail.getJumlah();
-            }
-            penjualan.setTotal_harga(totalHarga);
 
             // Save the sales transaction
             Penjualan savedPenjualan = penjualanRepository.save(penjualan);
 
             // Update the detail_penjualan table with the details of the products sold
-            for (DetailPenjualan detail : penjualan.getDetailPenjualanList()) {
-                detail.setPenjualan(savedPenjualan);
-                detailPenjualanRepository.save(detail);
+            for (Integer idProduk : penjualan.getIdProdukList()) {
+                DetailPenjualan detailPenjualan = new DetailPenjualan();
+                DetailPenjualanPK detailPenjualanPK = new DetailPenjualanPK();
+                detailPenjualanPK.setId_transaksi(savedPenjualan.getId_transaksi());
+                detailPenjualanPK.setId_produk(idProduk);
+                detailPenjualan.setJumlah(1);
+                detailPenjualan.setDetailPenjualanPK(detailPenjualanPK);
+
+                // Save the detail of the product sold
+                detailPenjualanRepository.save(detailPenjualan);
             }
+
             return new DtoResponse(200, savedPenjualan, mPjlCreateSuccess);
         } catch (Exception e) {
             return new DtoResponse(500, penjualan, mPjlCreateFailed);
         }
-
     }
 }
