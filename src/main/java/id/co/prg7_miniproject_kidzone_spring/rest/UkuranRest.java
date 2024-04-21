@@ -5,6 +5,8 @@ import id.co.prg7_miniproject_kidzone_spring.response.DtoResponse;
 import id.co.prg7_miniproject_kidzone_spring.service.UkuranService;
 import id.co.prg7_miniproject_kidzone_spring.vo.UkuranVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin
@@ -21,6 +23,11 @@ public class UkuranRest {
     @GetMapping("/getUkurans")
     public DtoResponse getUkurans(){
         return ukuranService.getAllUkurans();
+    }
+    @GetMapping("/getUkuranById/{id}")
+    public ResponseEntity<DtoResponse> getProdukById(@PathVariable("id") Integer id_ukuran) {
+        DtoResponse response = ukuranService.getUkuranById(id_ukuran);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/getUkuranActive")
@@ -42,7 +49,6 @@ public class UkuranRest {
     public DtoResponse deleteUkuran(@RequestBody UkuranVo ukuranVo){
         return ukuranService.deleteUkuran(ukuranVo);
     }
-
 
 
 

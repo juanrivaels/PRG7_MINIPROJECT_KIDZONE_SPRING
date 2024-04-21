@@ -7,6 +7,7 @@ import id.co.prg7_miniproject_kidzone_spring.vo.UkuranVo;
 public interface UkuranService {
     DtoResponse getAllUkurans();
     DtoResponse getUkuranActive();
+    DtoResponse getUkuranById(Integer id_ukuranr);
     DtoResponse saveUkuran(UkuranVo ukuranVo);
     DtoResponse updateUkuran(Ukuran ukuran);
     DtoResponse deleteUkuran(UkuranVo ukuranVo);

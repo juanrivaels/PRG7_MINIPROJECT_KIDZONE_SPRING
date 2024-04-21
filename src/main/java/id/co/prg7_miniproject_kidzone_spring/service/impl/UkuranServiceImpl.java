@@ -1,6 +1,7 @@
 package id.co.prg7_miniproject_kidzone_spring.service.impl;
 
 import id.co.prg7_miniproject_kidzone_spring.dao.UkuranDao;
+import id.co.prg7_miniproject_kidzone_spring.model.Produk;
 import id.co.prg7_miniproject_kidzone_spring.model.Ukuran;
 import id.co.prg7_miniproject_kidzone_spring.repository.UkuranRepository;
 import id.co.prg7_miniproject_kidzone_spring.response.DtoResponse;
@@ -36,6 +37,19 @@ public class UkuranServiceImpl implements UkuranService {
             return new DtoResponse(200, ukuranDao.getUkuranActive());
         }
         return new DtoResponse(200, null, mEmptyData);
+    }
+    @Override
+    public DtoResponse getUkuranById(Integer id) {
+        try {
+            Ukuran ukuran = ukuranRepository.findById(id).orElse(null);
+            if (ukuran != null) {
+                return new DtoResponse(200, ukuran);
+            } else {
+                return new DtoResponse(404, null, "Ukuran dengan ID " + id + " tidak ditemukan.");
+            }
+        } catch (Exception e) {
+            return new DtoResponse(500, null, "Gagal mengambil data ukuran: " + e.getMessage());
+        }
     }
 
     @Override

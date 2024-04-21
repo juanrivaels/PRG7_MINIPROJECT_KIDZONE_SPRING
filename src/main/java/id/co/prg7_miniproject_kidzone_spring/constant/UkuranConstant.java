@@ -10,5 +10,5 @@ public class UkuranConstant {
     public static final String mUpdateFailed = "Gagal memperbarui ukuran!";
     public static final String mDeleteSuccess = "Berhasil menghapus ukuran!";
     public static final String mDeleteFailed = "Gagal menghapus ukuran!";
-    public static final String qAllDataActive = "SELECT * FROM ms_ukuran WHERE status = ?1";
+    public static final String qAllDataActive = "SELECT * FROM ms_ukuran WHERE ukr_status = ?1";
 }

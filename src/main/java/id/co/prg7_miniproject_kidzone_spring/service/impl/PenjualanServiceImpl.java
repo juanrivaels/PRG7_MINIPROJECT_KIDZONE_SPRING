@@ -51,17 +51,17 @@ public class PenjualanServiceImpl implements PenjualanService {
         try {
             penjualan.setTgl_transaksi(new Date());
 
-            // Iterate over the list of product IDs in the transaction
-            for (Integer idProduk : penjualan.getIdProdukList()) {
-                DtoResponse produkResponse = produKService.getProdukById(idProduk);
-                Produk produk = (Produk) produkResponse.getData();
-                if (produk != null && produk.getPro_stok() > 0) {
-                    produk.setPro_stok(produk.getPro_stok() - 1);
-                    produKService.updateProduk(produk);
-                } else {
-                    return new DtoResponse(400, null, "Produk dengan ID" + idProduk + "tidak tersedia.");
-                }
-            }
+//            // Iterate over the list of product IDs in the transaction
+//            for (Integer idProduk : penjualan.getIdProdukList()) {
+//                DtoResponse produkResponse = produKService.getProdukById(idProduk);
+//                Produk produk = (Produk) produkResponse.getData();
+//                if (produk != null && produk.getPro_stok() > 0) {
+//                    produk.setPro_stok(produk.getPro_stok() - 1);
+//                    produKService.updateProduk(produk);
+//                } else {
+//                    return new DtoResponse(400, null, "Produk dengan ID" + idProduk + "tidak tersedia.");
+//                }
+//            }
 
             // Save the sales transaction
             Penjualan savedPenjualan = penjualanRepository.save(penjualan);
@@ -72,7 +72,7 @@ public class PenjualanServiceImpl implements PenjualanService {
                 DetailPenjualanPK detailPenjualanPK = new DetailPenjualanPK();
                 detailPenjualanPK.setId_transaksi(savedPenjualan.getId_transaksi());
                 detailPenjualanPK.setId_produk(idProduk);
-                detailPenjualan.setJumlah(1);
+//                detailPenjualan.setJumlah(1);
                 detailPenjualan.setDetailPenjualanPK(detailPenjualanPK);
 
                 // Save the detail of the product sold
