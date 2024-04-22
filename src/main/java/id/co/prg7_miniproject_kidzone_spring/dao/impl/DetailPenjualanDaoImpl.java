@@ -25,6 +25,7 @@ public class DetailPenjualanDaoImpl implements DetailPenjualanDao {
     public List<DetailPenjualanVo> getAllDetailPenjualan(){
         Iterable<DetailPenjualan> detailPenjualan = detailPenjualanRepository.findAll();
         List<DetailPenjualanVo> detailPenjualanVos = new ArrayList<>();
+
         for (DetailPenjualan item : detailPenjualan){
             DetailPenjualanVo detailPenjualanVo = new DetailPenjualanVo(item);
 

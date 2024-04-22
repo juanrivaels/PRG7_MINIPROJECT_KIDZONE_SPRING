@@ -17,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.BaseUri;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+
 import static id.co.prg7_miniproject_kidzone_spring.constant.PenjualanConstant.*;
 
 @Service
@@ -47,13 +49,23 @@ public class DetailPenjualanServiceImpl implements DetailPenjualanService {
             if (produk == null) {
                 return new DtoResponse(400, null, "Produk is invalid");
             }
-
             // Validate transaksi
             Penjualan penjualan = penjualanRepository.findById(detailPenjualanVoForm.getId_transaksi()).orElse(null);
             if (penjualan == null) {
                 return new DtoResponse(400, null, "Penjualan is invalid");
             }
 
+            // Kurangi stok produk
+            int jumlahJual = detailPenjualanVoForm.getJumlah();
+            if (jumlahJual <= 0) {
+                return new DtoResponse(400, null, "Jumlah harus lebih dari 0");
+            }
+            if (produk.getPro_stok() < jumlahJual) {
+                return new DtoResponse(400, null, "Stok produk tidak mencukupi");
+            }
+
+            produk.setPro_stok(produk.getPro_stok() - jumlahJual);
+            produkRepository.save(produk);
 
             DetailPenjualanPK detailPenjualanPK = new DetailPenjualanPK();
             detailPenjualanPK.setId_transaksi(detailPenjualanVoForm.getId_transaksi());
@@ -61,9 +73,18 @@ public class DetailPenjualanServiceImpl implements DetailPenjualanService {
 
             DetailPenjualan detailPenjualan = new DetailPenjualan();
             detailPenjualan.setDetailPenjualanPK(detailPenjualanPK);
-            detailPenjualan.setJumlah(detailPenjualanVoForm.getJumlah());
+            detailPenjualan.setJumlah(jumlahJual);
 
             detailPenjualanRepository.save(detailPenjualan);
+
+            // Hitung total harga
+            float hargaProduk = produk.getPro_harga();
+            float totalHarga = hargaProduk * jumlahJual;
+
+            // Update total harga pada tabel penjualan
+            penjualan.setTotal_harga(totalHarga);
+            penjualanRepository.save(penjualan);
+
             return new DtoResponse(200, detailPenjualanVoForm, "Detail Penjualan created successfully.");
         } catch (Exception e) {
             return new DtoResponse(500, detailPenjualanVoForm, "Failed to create Detail Penjualan.");

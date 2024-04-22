@@ -6,7 +6,6 @@ import java.io.Serializable;
 
 public class DetailPenjualanVo implements Serializable {
     private Integer id_transaksi;
-    private String transaksiDesc;
     private Integer id_produk;
     private String produkDesc;
     private Integer jumlah;
@@ -29,13 +28,6 @@ public class DetailPenjualanVo implements Serializable {
         this.id_transaksi = id_transaksi;
     }
 
-    public String getTransaksiDesc() {
-        return transaksiDesc;
-    }
-
-    public void setTransaksiDesc(String transaksiDesc) {
-        this.transaksiDesc = transaksiDesc;
-    }
 
     public Integer getId_produk() {
         return id_produk;

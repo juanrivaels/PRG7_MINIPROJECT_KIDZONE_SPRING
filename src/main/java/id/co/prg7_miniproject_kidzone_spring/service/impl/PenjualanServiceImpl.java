@@ -5,7 +5,6 @@ import id.co.prg7_miniproject_kidzone_spring.dao.PenjualanDao;
 import id.co.prg7_miniproject_kidzone_spring.model.DetailPenjualan;
 import id.co.prg7_miniproject_kidzone_spring.model.DetailPenjualanPK;
 import id.co.prg7_miniproject_kidzone_spring.model.Penjualan;
-import id.co.prg7_miniproject_kidzone_spring.model.Produk;
 import id.co.prg7_miniproject_kidzone_spring.repository.DetailPenjualanRepository;
 import id.co.prg7_miniproject_kidzone_spring.repository.PenjualanRepository;
 import id.co.prg7_miniproject_kidzone_spring.repository.ProdukRepository;
